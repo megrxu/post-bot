@@ -1,30 +1,33 @@
-import telegram, requests, json, datetime
+import telegram, requests, json, utils
 from ids import *
 
+# Firse command
 def hello(bot, update):
+    chat_id = update.message.chat_id
+    bot.send_chat_action(chat_id=chat_id, action=telegram.ChatAction.TYPING)
     update.message.reply_text(
         'Hello {}'.format(update.message.from_user.first_name))
 
 # Get random jokes
 def laugh(bot, update):
+    chat_id = update.message.chat_id
+    bot.send_chat_action(chat_id=chat_id, action=telegram.ChatAction.TYPING)
     headers = {'Accept': 'text/plain'}
     joke = requests.get('https://icanhazdadjoke.com/',headers=headers)
     update.message.reply_text(joke.text)
 
-
+# Get news from sources
 def news(bot, update):
-    url = 'https://newsapi.org/v1/articles?source={source}&apiKey={apiKey}'.format(source='techcrunch', apiKey=news_api)
-    news_json = requests.get(url)
-    news_object = json.loads(news_json.text)
-    for item in news_object['articles']:
-      text = '*{title}* \n\n{desp} \n\n[Link]({link}) \n{time}'
-      text = text.format(title=item['title'], link=item['url'], desp=item['description'], time=item['publishedAt'])
-      chat_id = update.message.chat_id
-    #   chat_id = '@TyteKa_Channel'
-      k = bot.send_message(chat_id=chat_id, text=text, parse_mode=telegram.ParseMode.MARKDOWN, disable_web_page_preview=True).message_id
-      if (item['urlToImage'] != '' and '(' not in item['urlToImage']):
-        if item['urlToImage'][0] == '/':
-            url = 'https:' + item['urlToImage']
-        else:
-            url = item['urlToImage']
-        bot.send_message(chat_id=chat_id, text='[Image]({link})'.format(link=url), parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=k)
+    chat_id = update.message.chat_id
+    bot.send_chat_action(chat_id=chat_id, action=telegram.ChatAction.TYPING)
+
+    url_source = 'https://newsapi.org/v1/sources?language=en'
+    source_json = requests.get(url_source)
+    source_object = json.loads(source_json.text)
+
+    source_list = []
+    for item in source_object['sources']:
+      source_list.append(telegram.InlineKeyboardButton(item['name'], callback_data=item['id']))
+
+    reply_markup = telegram.InlineKeyboardMarkup(utils.build_menu(source_list, n_cols=2))
+    bot.send_message(chat_id=chat_id, text="Please choose a news source", reply_markup=reply_markup).message_id

@@ -1,3 +1,7 @@
+from ids import *
+import telegram, requests, json
+
+# Runs 8:00 every day
 def news_sch(bot, job):
     url = 'https://newsapi.org/v1/articles?source={source}&apiKey={apiKey}'.format(source='google-news', apiKey=news_api)
     news_json = requests.get(url)
@@ -13,4 +17,4 @@ def news_sch(bot, job):
             url = 'https:' + item['urlToImage']
         else:
             url = item['urlToImage']
-        bot.send_message(chat_id=chat_id, text='[Image]({link})'.format(link=url), parse_mode=telegram.ParseMode.MARKDOWN, reply_to_message_id=k)
+        bot.send_photo(chat_id=chat_id, photo=url, reply_to_message_id=k)
