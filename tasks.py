@@ -3,7 +3,7 @@ import telegram, requests, json
 
 # Runs 8:00 every day
 def news_sch(bot, job):
-    url = 'https://newsapi.org/v1/articles?source={source}&apiKey={apiKey}'.format(source='google-news', apiKey=news_api)
+    url = 'https://newsapi.org/v1/articles?source={source}&apiKey={apiKey}'.format(source='engadget', apiKey=news_api)
     news_json = requests.get(url)
     news_object = json.loads(news_json.text)
 
