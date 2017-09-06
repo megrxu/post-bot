@@ -1,4 +1,5 @@
-import subprocess
+import subprocess, facebook
+from ids import *
 
 def build_menu(buttons,
                n_cols,
@@ -37,11 +38,22 @@ def save_message(bot, msg):
 
     # Post
     # Channel
+    graph = facebook.GraphAPI(access_token=facebook_auth_token, version="2.1")
+
     chat_id = '@TyteKa_Channel'
     if (flag == -1):
+      # On channel
       bot.send_message(chat_id=chat_id, text=msg['text'])
+      # On facebook
+      graph.put_object(
+         parent_object="me",
+         connection_name="feed",
+         message=msg['text'])
     elif (flag == 0):
       bot.send_photo(chat_id=chat_id, photo=msg['photo'][-1]['file_id'], caption=msg['caption'] if 'caption' in msg.keys() else None)
+
+      graph.put_photo(image=open('message_files/pics/' + path.split('/')[-1], 'rb'),
+                message=msg['caption'] if 'caption' in msg.keys() else 'Post a picture.')
     elif (flag == 1):
       bot.send_voice(chat_id=chat_id, voice=msg['voice']['file_id'], caption=msg['caption'] if 'caption' in msg.keys() else None)
     elif (flag == 2):
