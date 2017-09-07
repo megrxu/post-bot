@@ -13,35 +13,35 @@ def build_menu(buttons,
     return menu[0]
 
 def save_message(bot, msg):
-    flag = -1
+    flag = 'text'
 
     if (msg['photo']):
       file = bot.getFile(msg['photo'][-1]['file_id'])
       path = file['file_path']
       subprocess.call(['mkdir', 'message_files/pics'])
       subprocess.call(['wget', path, '-P', 'message_files/pics/'])
-      flag = 0
+      flag = 'pic'
 
     if ('voice' in msg.keys()):
       file = bot.getFile(msg['voice']['file_id'])
       path = file['file_path']
       subprocess.call(['mkdir', 'message_files/voice'])
       subprocess.call(['wget', path, '-P', 'message_files/voice/'])
-      flag = 1
+      flag = 'voice'
 
     if ('document' in msg.keys()):
       file = bot.getFile(msg['document']['file_id'])
       path = file['file_path']
       subprocess.call(['mkdir', 'message_files/document'])
       subprocess.call(['wget', path, '-P', 'message_files/document/'])
-      flag = 2
+      flag = 'docu'
 
     # Post
     # Channel
     graph = facebook.GraphAPI(access_token=facebook_auth_token, version="2.1")
 
     chat_id = '@TyteKa_Channel'
-    if (flag == -1):
+    if (flag == 'text'):
       # On channel
       bot.send_message(chat_id=chat_id, text=msg['text'])
       # On facebook
@@ -49,14 +49,14 @@ def save_message(bot, msg):
          parent_object="me",
          connection_name="feed",
          message=msg['text'])
-    elif (flag == 0):
+    elif (flag == 'photo'):
       bot.send_photo(chat_id=chat_id, photo=msg['photo'][-1]['file_id'], caption=msg['caption'] if 'caption' in msg.keys() else None)
 
       graph.put_photo(image=open('message_files/pics/' + path.split('/')[-1], 'rb'),
                 message=msg['caption'] if 'caption' in msg.keys() else 'Post a picture.')
-    elif (flag == 1):
+    elif (flag == 'voice'):
       bot.send_voice(chat_id=chat_id, voice=msg['voice']['file_id'], caption=msg['caption'] if 'caption' in msg.keys() else None)
-    elif (flag == 2):
+    elif (flag == 'document'):
       bot.send_document(chat_id=chat_id, document=msg['document']['file_id'], caption=msg['caption'] if 'caption' in msg.keys() else None)
 
     bot.send_message(chat_id=msg['chat']['id'], text='Posted.', reply_to_message_id=msg['message_id'])

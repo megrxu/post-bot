@@ -25,9 +25,11 @@ def news(bot, update):
     source_json = requests.get(url_source)
     source_object = json.loads(source_json.text)
 
+    name_list = ['BBC News', 'Buzzfeed', 'CNN', 'Engadget', 'Google News', 'Hacker News', 'National Geographic', 'The Economist', 'The Telegraph', 'The Verge', 'The Washington Post', 'Time', 'USA Today']
     source_list = []
     for item in source_object['sources']:
-      source_list.append(telegram.InlineKeyboardButton(item['name'], callback_data=item['id']))
+        if(item['name'] in name_list):
+            source_list.append(telegram.InlineKeyboardButton(item['name'], callback_data=item['id']))
 
     reply_markup = telegram.InlineKeyboardMarkup(utils.build_menu(source_list, n_cols=2))
     bot.send_message(chat_id=chat_id, text="Please choose a news source", reply_markup=reply_markup).message_id
