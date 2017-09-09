@@ -49,14 +49,14 @@ def save_message(bot, msg):
          parent_object="me",
          connection_name="feed",
          message=msg['text'])
-    elif (flag == 'photo'):
+    elif (flag == 'pic'):
       bot.send_photo(chat_id=chat_id, photo=msg['photo'][-1]['file_id'], caption=msg['caption'] if 'caption' in msg.keys() else None)
 
       graph.put_photo(image=open('message_files/pics/' + path.split('/')[-1], 'rb'),
                 message=msg['caption'] if 'caption' in msg.keys() else 'Post a picture.')
     elif (flag == 'voice'):
       bot.send_voice(chat_id=chat_id, voice=msg['voice']['file_id'], caption=msg['caption'] if 'caption' in msg.keys() else None)
-    elif (flag == 'document'):
+    elif (flag == 'docu'):
       bot.send_document(chat_id=chat_id, document=msg['document']['file_id'], caption=msg['caption'] if 'caption' in msg.keys() else None)
 
     bot.send_message(chat_id=msg['chat']['id'], text='Posted.', reply_to_message_id=msg['message_id'])

@@ -8,17 +8,10 @@ def news_sch(bot, job):
     news_object = json.loads(news_json.text)
 
     chat_id = '@TyteKa_Channel'
-    # for item in news_object['articles']:
-    #   text = '*{title}* \n\n{desp} \n\n[Link]({link}) \n{time}'
-    #   text = text.format(title=item['title'], link=item['url'], desp=item['description'], time=item['publishedAt'])
-    #   chat_id = '@TyteKa_Channel'
-    #   k = bot.send_message(chat_id=chat_id, text=text, parse_mode=telegram.ParseMode.MARKDOWN, disable_web_page_preview=True).message_id
-    #   if (item['urlToImage'] != '' and '(' not in item['urlToImage']):
-    #     if item['urlToImage'][0] == '/':
-    #         url = 'https:' + item['urlToImage']
-    #     else:
-    #         url = item['urlToImage']
-    #     bot.send_photo(chat_id=chat_id, photo=url, reply_to_message_id=k)
+    bot.send_message(chat_id=chat_id, text='Good morning!')
+    text = '*Engadget at Today\'s 8:00*  #news\n\n'
+    text += '-------------------\n'
     for item in news_object['articles']:
-        text = ('*{title}*\n[Link]({link})'.format(title=item['title'], link=item['url']))
-        bot.send_message(chat_id=chat_id, text=text, parse_mode=telegram.ParseMode.MARKDOWN, disable_web_page_preview=False)
+        text += ('{title}\n[Link]({link})\n'.format(title=item['title'], link=item['url']))
+        text += '-------------------\n'
+    bot.send_message(chat_id=chat_id, text=text, parse_mode=telegram.ParseMode.MARKDOWN, disable_web_page_preview=True)
