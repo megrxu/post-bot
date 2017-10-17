@@ -23,6 +23,7 @@ def post(bot, update, chat_id):
 
     reply_markup = telegram.InlineKeyboardMarkup(utils.build_menu(source_list, n_cols=2))
     bot.send_message(chat_id=chat_id, text="Would you like to post it?", reply_markup=reply_markup, reply_to_message_id=update.message.message_id)
+    
 
     subprocess.call(['rm', 'message_files', '-rf'])
     subprocess.call(['mkdir', 'message_files'])

@@ -40,7 +40,8 @@ def save_message(bot, msg):
     # Channel
     graph = facebook.GraphAPI(access_token=facebook_auth_token, version="2.1")
 
-    chat_id = '@TyteKa_Channel'
+    # chat_id = '@TyteKa_Channel'
+    chat_id = -1001103536115
     if (flag == 'text'):
       # On channel
       bot.send_message(chat_id=chat_id, text=msg['text'])

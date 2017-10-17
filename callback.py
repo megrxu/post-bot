@@ -40,3 +40,5 @@ def ifpost(bot, update):
 
     else:
       bot.answer_callback_query(callback_query_id=update.callback_query.id, text='Canceled.')
+    
+    # bot.edit_message_reply_markup(chat_id=chat_id, message_id=sent.message_id, reply_markup=None)
