@@ -1,5 +1,6 @@
-import subprocess, facebook
+import commands, subprocess
 from ids import *
+
 
 def build_menu(buttons,
                n_cols,
@@ -12,48 +13,43 @@ def build_menu(buttons,
         menu.append(footer_buttons)
     return menu[0]
 
-def save_message(bot, msg):
-    flag = 'text'
+
+def get_post(bot, update):
+    msg = update.message
     if (msg['photo']):
-      file = bot.getFile(msg['photo'][-1]['file_id'])
-      path = file['file_path']
-      subprocess.call(['mkdir', 'message_files/pics'])
-      subprocess.call(['wget', path, '-P', 'message_files/pics/'])
-      flag = 'pic'
-    elif ('voice' in msg.keys()):
-      file = bot.getFile(msg['voice']['file_id'])
-      path = file['file_path']
-      subprocess.call(['mkdir', 'message_files/voice'])
-      subprocess.call(['wget', path, '-P', 'message_files/voice/'])
-      flag = 'voice'
-    elif ('document' in msg.keys()):
-      file = bot.getFile(msg['document']['file_id'])
-      path = file['file_path']
-      subprocess.call(['mkdir', 'message_files/document'])
-      subprocess.call(['wget', path, '-P', 'message_files/document/'])
-      flag = 'docu'
+        file = bot.getFile(msg['photo'][-1]['file_id'])
+        path = file['file_path']
+        subprocess.call(['mkdir', 'message_files/pics'])
+        subprocess.call(['wget', path, '-P', 'message_files/pics/'])
 
-    # Post
-    # Channel
-    graph = facebook.GraphAPI(access_token=facebook_auth_token, version="2.1")
+def chat_dispatcher(bot, update):
+    #If it is authorized user
+    authorized_ids = [TyteKa]
+    if update.message.chat_id in authorized_ids:
+        get_post(bot, update)
+        commands.post(bot, update)                
+    else:
+        commands.echo(bot, update)
+        
+def callback_dispatcher(bot, update):
+    call_str = update.callback_query['data'].split('/')
+    chat_id = update.callback_query['message']['chat']['id']
+    message_id = update.callback_query['message']['message_id']
+    if call_str[0] == 'post':
+        if (int(call_str[1])):
+            commands.dopost(bot, update)
+            bot.answer_callback_query(callback_query_id=update.callback_query.id, text='Posted.')
+            bot.edit_message_text(chat_id=chat_id, message_id=message_id, text='Posted.')
+        else:
+            bot.answer_callback_query(callback_query_id=update.callback_query.id, text='Canceled.')
+            bot.edit_message_text(chat_id=chat_id, message_id=message_id, text='Canceled.')
+    elif call_str[0] == 'news':
+        bot.answer_callback_query(callback_query_id=update.callback_query.id, text='Here you go.')        
+        bot.edit_message_text(chat_id=chat_id, message_id=message_id, text='Here\'s the news.')
+        commands.send_news(bot, update, call_str[1])
+        
 
-    # chat_id = '@TyteKa_Channel'
-    chat_id = TyteKaChannel
-    if (flag == 'text'):
-      # On channel
-      bot.send_message(chat_id=chat_id, text=msg['text'])
-      # On facebook
-      graph.put_object(
-         parent_object="me",
-         connection_name="feed",
-         message=msg['text'])
-    elif (flag == 'pic'):
-      bot.send_photo(chat_id=chat_id, photo=msg['photo'][-1]['file_id'], caption=msg['caption'] if 'caption' in msg.keys() else None)
-      graph.put_photo(image=open('message_files/pics/' + path.split('/')[-1], 'rb'),
-                message=msg['caption'] if 'caption' in msg.keys() else 'Post a picture.')
-    elif (flag == 'voice'):
-      bot.send_voice(chat_id=chat_id, voice=msg['voice']['file_id'], caption=msg['caption'] if 'caption' in msg.keys() else None)
-    elif (flag == 'docu'):
-      bot.send_document(chat_id=chat_id, document=msg['document']['file_id'], caption=msg['caption'] if 'caption' in msg.keys() else None)
 
-    bot.send_message(chat_id=msg['chat']['id'], text='Posted.', reply_to_message_id=msg['message_id'])
+        
+        
+
