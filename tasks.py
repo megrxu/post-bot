@@ -8,7 +8,7 @@ def news_sch(bot, job):
     news_object = json.loads(news_json.text)
 
     # chat_id = '@TyteKa_Channel'
-    chat_id = -1001103536115
+    chat_id = TyteKaChannel
     bot.send_message(chat_id=chat_id, text='Good morning!')
     text = '*Engadget at Today\'s 8:00*  #news\n\n'
     text += '-------------------\n'
