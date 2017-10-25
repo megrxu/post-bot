@@ -1,7 +1,7 @@
 import telegram, requests, json, utils, subprocess, facebook
 from ids import *
 
-# Firse command
+# First command
 def hello(bot, update):
     chat_id = update.message.chat_id
     bot.send_chat_action(chat_id=chat_id, action=telegram.ChatAction.TYPING)
