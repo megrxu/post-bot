@@ -80,6 +80,7 @@ def dopost(bot, update):
     finally:
           file_object.close()
     msg = eval(msg_str)
+
     if (not msg['photo']):
         # On channel
         bot.send_message(chat_id=chat_id, text=msg['text'])
@@ -92,7 +93,7 @@ def dopost(bot, update):
         file = bot.getFile(msg['photo'][-1]['file_id'])
         path = file['file_path']
         bot.send_photo(chat_id=chat_id, photo=msg['photo'][-1]['file_id'], caption=msg['caption'] if 'caption' in msg.keys() else None)
-        print('message_files/pics/' + path.split('/')[-1])
+        # print('message_files/pics/' + path.split('/')[-1])
         graph.put_photo(image=open('message_files/pics/' + path.split('/')[-1], 'rb'), message=msg['caption'] if 'caption' in msg.keys() else 'No caption.')
 
     subprocess.call(['rm', 'message_files', '-rf'])
