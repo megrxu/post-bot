@@ -49,7 +49,3 @@ def callback_dispatcher(bot, update):
         commands.send_news(bot, update, call_str[1])
         
 
-
-        
-        
-
