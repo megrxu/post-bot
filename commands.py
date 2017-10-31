@@ -1,5 +1,6 @@
 import telegram, requests, json, utils, subprocess, facebook
 from ids import *
+import tweepy
 
 # Firse command
 def hello(bot, update):
@@ -89,12 +90,26 @@ def dopost(bot, update):
             parent_object="me",
             connection_name="feed",
             message=msg['text'])
+        api = auth_twitter()
+        api.update_status(status = msg['text'])
+
     else:
         file = bot.getFile(msg['photo'][-1]['file_id'])
         path = file['file_path']
+        # Channel
         bot.send_photo(chat_id=chat_id, photo=msg['photo'][-1]['file_id'], caption=msg['caption'] if 'caption' in msg.keys() else None)
         # print('message_files/pics/' + path.split('/')[-1])
+        # Facebook
         graph.put_photo(image=open('message_files/pics/' + path.split('/')[-1], 'rb'), message=msg['caption'] if 'caption' in msg.keys() else 'No caption.')
+        # Twitter
+        api = auth_twitter()
+        api.update_with_media('message_files/pics/' + path.split('/')[-1], status = msg['caption'] if 'caption' in msg.keys() else 'No caption.')
+
 
     subprocess.call(['rm', 'message_files', '-rf'])
     subprocess.call(['mkdir', 'message_files'])
+
+def auth_twitter():
+    auth = tweepy.OAuthHandler(t_api_key, t_api_sec)
+    auth.set_access_token(t_token, t_sec)
+    return tweepy.API(auth)
