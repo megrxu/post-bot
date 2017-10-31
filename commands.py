@@ -108,11 +108,8 @@ def dopost(bot, update):
 
     subprocess.call(['rm', 'message_files', '-rf'])
     subprocess.call(['mkdir', 'message_files'])
-<<<<<<< HEAD
 
 def auth_twitter():
     auth = tweepy.OAuthHandler(t_api_key, t_api_sec)
     auth.set_access_token(t_token, t_sec)
     return tweepy.API(auth)
-=======
->>>>>>> 6b376d84b06cc55828204c8c1561aa7407c415fd
