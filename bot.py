@@ -13,7 +13,7 @@ updater.dispatcher.add_handler(CommandHandler('news', commands.news))
 updater.dispatcher.add_handler(CallbackQueryHandler(utils.callback_dispatcher))
 updater.dispatcher.add_handler(MessageHandler(Filters.all, utils.chat_dispatcher))
 
-updater.job_queue.run_daily(tasks.news_sch, time=datetime.time(0, 0, 0), name='News')
+updater.job_queue.run_daily(tasks.laugh_sch, time=datetime.time(0, 0, 0), name='Laugh')
 
 # Start the bot
 updater.start_polling()

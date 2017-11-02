@@ -16,3 +16,12 @@ def news_sch(bot, job):
         text += ('{title}\n[Link]({link})\n'.format(title=item['title'], link=item['url']))
         text += '-------------------\n'
     bot.send_message(chat_id=chat_id, text=text, parse_mode=telegram.ParseMode.MARKDOWN, disable_web_page_preview=True)
+
+def laugh_sch(bot, job):
+    headers = {'Accept': 'text/plain'}
+    joke = requests.get('https://icanhazdadjoke.com/',headers=headers)
+
+    # chat_id = '@TyteKa_Channel'
+    chat_id = TyteKaChannel
+    bot.send_message(chat_id=chat_id, text='Good morning!')
+    bot.send_message(chat_id=chat_id, text='*Today\'s joke:*  #jokes\n\n' + joke.text, parse_mode=telegram.ParseMode.MARKDOWN)
