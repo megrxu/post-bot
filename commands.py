@@ -9,6 +9,20 @@ def hello(bot, update):
     update.message.reply_text(
         'Hello {}'.format(update.message.from_user.first_name))
 
+# Get random hans
+def hans(bot, update):
+    chat_id = update.message.chat_id
+    bot.send_chat_action(chat_id=chat_id, action=telegram.ChatAction.TYPING)
+    text = utils.randomCN()
+    update.message.reply_text(text)
+
+# Get random zen
+def zen(bot, update):
+    chat_id = update.message.chat_id
+    bot.send_chat_action(chat_id=chat_id, action=telegram.ChatAction.TYPING)
+    zen = requests.get('https://api.github.com/zen')
+    update.message.reply_text(zen.text)
+
 # Get random jokes
 def laugh(bot, update):
     chat_id = update.message.chat_id
@@ -104,7 +118,6 @@ def dopost(bot, update):
         # Twitter
         api = auth_twitter()
         api.update_with_media('message_files/pics/' + path.split('/')[-1], status = msg['caption'] if 'caption' in msg.keys() else 'No caption.')
-
 
     subprocess.call(['rm', 'message_files', '-rf'])
     subprocess.call(['mkdir', 'message_files'])

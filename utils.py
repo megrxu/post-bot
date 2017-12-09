@@ -1,5 +1,7 @@
 import commands, subprocess
 from ids import *
+import random
+from data import Hans 
 
 
 def build_menu(buttons,
@@ -27,7 +29,7 @@ def chat_dispatcher(bot, update):
     authorized_ids = [TyteKa]
     if update.message.chat_id in authorized_ids:
         get_post(bot, update)
-        commands.post(bot, update)                
+        commands.post(bot, update)
     else:
         commands.echo(bot, update)
         
@@ -48,4 +50,6 @@ def callback_dispatcher(bot, update):
         bot.edit_message_text(chat_id=chat_id, message_id=message_id, text='Here\'s the news.')
         commands.send_news(bot, update, call_str[1])
         
-
+def randomCN():
+    num = random.sample(list(range(5, 20)), 1)
+    return "".join(random.sample(Hans, num[0]))
