@@ -15,7 +15,7 @@ updater.dispatcher.add_handler(CommandHandler('zen', commands.zen))
 updater.dispatcher.add_handler(CallbackQueryHandler(utils.callback_dispatcher))
 updater.dispatcher.add_handler(MessageHandler(Filters.all, utils.chat_dispatcher))
 
-updater.job_queue.run_daily(tasks.daily_sch, time=datetime.time(0, 0, 00), name='daily')
+updater.job_queue.run_daily(tasks.daily_sch, time=datetime.time(0, 0, 0), name='daily')
 
 # Start the bot
 updater.start_polling()
