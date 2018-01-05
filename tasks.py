@@ -41,5 +41,13 @@ def hans_sch(bot, job):
     text = 'Good morning!\n*{zen}*'.format(zen = text)
     bot.send_message(chat_id=chat_id, text=text, parse_mode=telegram.ParseMode.MARKDOWN)
 
+def hito_sch(bot, job):
+    chat_id = TyteKaChannel
+    url = 'https://sslapi.hitokoto.cn'
+    hito_json = requests.get(url)
+    hito = json.loads(hito_json.text)
+    text = 'Good morning!\n----------------\n*今日一言:*  #hitokoto\n\n{hito}\n_——{cfrom}_'.format(hito = hito['hitokoto'], cfrom=hito['from'])
+    bot.send_message(chat_id=chat_id, text=text, parse_mode=telegram.ParseMode.MARKDOWN)
+
 def daily_sch(bot, job):
-    laugh_sch(bot, job)
+    hito_sch(bot, job)
