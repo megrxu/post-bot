@@ -1,4 +1,4 @@
-from ids import *
+from creadcials import *
 import telegram, requests, json
 from utils import randomCN
 

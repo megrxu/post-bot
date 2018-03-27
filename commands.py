@@ -1,5 +1,5 @@
 import telegram, requests, json, utils, subprocess, facebook
-from ids import *
+from creadcials import *
 import tweepy
 
 # First command

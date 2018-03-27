@@ -1,6 +1,6 @@
 import utils, commands, tasks, datetime
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Job, CallbackQueryHandler
-from ids import *
+from creadcials import *
 
 # Connect to the bot
 updater = Updater(bot_token)
