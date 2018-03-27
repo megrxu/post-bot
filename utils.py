@@ -1,5 +1,5 @@
 import commands, subprocess
-from ids import *
+from creadcials import *
 import random
 from data import Hans 
 
